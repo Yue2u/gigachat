@@ -62,7 +62,7 @@ def sync(
     *,
     file_id: str,
     access_token: Optional[str] = None,
-) -> Models:
+) -> bytes:
     """Возвращает изображение в бинарном виде"""
     kwargs = _get_kwargs(file_id=file_id, access_token=access_token)
     response = client.request(**kwargs)
@@ -74,7 +74,7 @@ async def asyncio(
     *,
     file_id: str,
     access_token: Optional[str] = None,
-) -> Models:
+) -> bytes:
     """Возвращает изображение в бинарном виде"""
     kwargs = _get_kwargs(file_id=file_id, access_token=access_token)
     response = await client.request(**kwargs)
