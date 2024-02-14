@@ -50,7 +50,7 @@ def _get_kwargs(
 
 def _build_response(response: httpx.Response) -> Models:
     if response.status_code == HTTPStatus.OK:
-        return response.text
+        return response.content
     elif response.status_code == HTTPStatus.UNAUTHORIZED:
         raise AuthenticationError(response.url, response.status_code, response.content, response.headers)
     else:
