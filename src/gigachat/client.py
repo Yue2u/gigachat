@@ -5,6 +5,7 @@ from typing import Any, AsyncIterator, Awaitable, Callable, Dict, Iterator, List
 import httpx
 
 from gigachat.api import (
+    get_image,
     get_model,
     get_models,
     post_auth,
@@ -223,6 +224,10 @@ class GigaChatSyncClient(_BaseClient):
         """Возвращает объект с описанием указанной модели"""
         return self._decorator(lambda: get_model.sync(self._client, model=model, access_token=self.token))
 
+    def get_image(self, file_id: str) -> bytes:
+        """Возвращает изображение в бинарном виде"""
+        return self._decorator(lambda: get_image.sync(self._client, file_id=file_id, access_token=self.token))
+
     def chat(self, payload: Union[Chat, Dict[str, Any], str]) -> ChatCompletion:
         """Возвращает ответ модели с учетом переданных сообщений"""
         chat = _parse_chat(payload, self._settings)
@@ -327,6 +332,14 @@ class GigaChatAsyncClient(_BaseClient):
 
         async def _acall() -> Model:
             return await get_model.asyncio(self._aclient, model=model, access_token=self.token)
+
+        return await self._adecorator(_acall)
+
+    async def aget_image(self, file_id: str) -> bytes:
+        """Возвращает изображение в бинарном виде"""
+
+        async def _acall() -> bytes:
+            return await get_image.asyncio(self._aclient, file_id=file_id, access_token=self.token)
 
         return await self._adecorator(_acall)
 
